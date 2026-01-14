@@ -1,26 +1,26 @@
 <#
 .SYNOPSIS
-M365-EXO-RetentionPolicyBulkUpdate.ps1
-Updates all mailboxes assigned to a specific retention policy.
+    M365-EXO-RetentionPolicyBulkUpdate.ps1
+    Updates all mailboxes assigned to a specific retention policy.
 
 .DESCRIPTION
-Searches for all mailboxes currently using a defined retention policy and updates
-them to a new target policy. Outputs each mailbox updated for visibility and
-logging. Intended for bulk remediation or policy realignment tasks in EXO.
+    Searches for all mailboxes currently using a defined retention policy and updates
+    them to a new target policy. Each updated mailbox is written to output for
+    visibility and logging. This script is intended for bulk remediation or policy
+    realignment tasks in Exchange Online.
 
-.AUTHOR
-sysadminsushi
-
-.VERSION
-2.0
+.NOTES
+    Author: sysadminsushi
+    Version: 3.0
+    License: MIT License (see LICENSE file in repository)
 #>
 
 # -----------------------------
-# User Defined Script Variables
+# User-Defined Script Variables
 # -----------------------------
 $CurrentPolicy = "Default MRM Policy"
 $NewPolicy     = "New Policy"
-$UserUPN = "admin@companies.com"
+$UserUPN       = "admin@companies.com"
 
 # -----------------------------
 # Connect to Exchange Online
