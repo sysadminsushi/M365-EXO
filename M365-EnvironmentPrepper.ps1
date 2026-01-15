@@ -22,7 +22,13 @@ making it the most stable choice for environments that need reliability,
 predictable auth, and minimal surprises during automation.
 #>
 Install-Module ExchangeOnlineManagement -RequiredVersion 3.3.0 -Force
-Install-Module Microsoft.Graph -Force
 
+<#
+This meta‑module brings in the authentication module and all submodules
+(Users, Groups, Identity.SignIns, Users.Actions, etc.). You don’t need
+to install each one separately.
+#>
+Install-Module Microsoft.Graph -Scope AllUsers -AllowClobber
 
 Write-Output "=== Environment Preparation Complete ==="
+
