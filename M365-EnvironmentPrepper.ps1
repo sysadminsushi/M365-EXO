@@ -1,34 +1,46 @@
 <#
 .SYNOPSIS
-    Prepares a clean PowerShell 7 environment for M365 automation.
+    Prepares a clean PowerShell 7 environment for 365/Azure automation.
 
 .DESCRIPTION
     Installs required Microsoft 365 modules in PowerShell 7.
 
 .NOTES
     Author: sysadminsushi
-    Version: 1.2
+    Version: 1.19.2026
     License: MIT License
 #>
 
-Write-Output "=== Preparing PowerShell 7 Environment for M365 Automation ==="
-
 <#
-Installing ExchangeOnlineManagement 3.3 ensures compatibility with legacy
-workflows that haven’t yet been updated for the newer 3.4+ authentication
-changes. Version 3.3 delivers the modern EXO V3 cmdlets without introducing
-the stricter dependency shifts and MSAL behavior seen in later releases,
-making it the most stable choice for environments that need reliability,
-predictable auth, and minimal surprises during automation.
+Installing ExchangeOnlineManagement 3.3 for stability. It provides
+modern EXO V3 cmdlets while avoiding the stricter MSAL dependency
+shifts introduced in v3.4+, ensuring predictable authentication and
+compatibility for legacy automation workflows.
 #>
-Install-Module ExchangeOnlineManagement -RequiredVersion 3.3.0 -Force
+Install-Module ExchangeOnlineManagement -RequiredVersion 3.3.0 -Force -SkipPublisherCheck
 
 <#
-This meta‑module brings in the authentication module and all submodules
-(Users, Groups, Identity.SignIns, Users.Actions, etc.). You don’t need
-to install each one separately.
+Microsoft.Graph is a meta-module that automatically includes all
+submodules (Users, Groups, Identity, etc.). Installing this single
+package ensures all necessary authentication and functional
+components are available without needing to manage individual
+Graph modules separately.
 #>
 Install-Module Microsoft.Graph -Scope AllUsers -AllowClobber
 
-Write-Output "=== Environment Preparation Complete ==="
+<#
+Az.Accounts provides authentication for all Az modules.
+Az.DesktopVirtualization provides AVD cmdlets such as:
+    - Get-AzWvdUserSession
+    - Get-AzWvdHostPool
+    - Get-AzWvdSessionHost
+These are required for AVD session reporting scripts.
+#>
+Install-Module Az.Accounts -Scope CurrentUser -Force
+Install-Module Az.DesktopVirtualization -Scope CurrentUser -Force
 
+# Display installed versions for quick verification
+"EXO:   $((Get-Module ExchangeOnlineManagement -ListAvailable).Version)"
+"Graph: $((Get-Module Microsoft.Graph -ListAvailable).Version)"
+"Az.Accounts: $((Get-Module Az.Accounts -ListAvailable).Version)"
+"Az.DesktopVirtualization: $((Get-Module Az.DesktopVirtualization -ListAvailable).Version)"
