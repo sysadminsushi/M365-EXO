@@ -46,3 +46,10 @@ Install-Module Az.DesktopVirtualization -Scope CurrentUser -Force -AllowClobber
 "Az.Accounts: $((Get-Module Az.Accounts -ListAvailable).Version)"
 "Az.DesktopVirtualization: $((Get-Module Az.DesktopVirtualization -ListAvailable).Version)"
 
+"EXO: $((Get-Module ExchangeOnlineManagement -ListAvailable | Select-Object -First 1).Version)"
+"Graph: $((Get-Module Microsoft.Graph -ListAvailable | Select-Object -First 1).Version)"
+"Az.Accounts: $((Get-Module Az.Accounts -ListAvailable | Select-Object -First 1).Version)"
+"Az.Resources: $((Get-Module Az.Resources -ListAvailable | Select-Object -First 1).Version)"
+"Az.DesktopVirtualization: $((Get-Module Az.DesktopVirtualization -ListAvailable | Select-Object -First 1).Version)"
+
+
