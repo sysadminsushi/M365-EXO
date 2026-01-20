@@ -11,7 +11,7 @@
 
 .NOTES
     Author: sysadminsushi
-    Version: 3.0
+    Version: 1.19.2026
     License: MIT License (see LICENSE file in repository)
 #>
 
@@ -20,12 +20,6 @@
 # -----------------------------
 $CurrentPolicy = "Default MRM Policy"
 $NewPolicy     = "New Policy"
-$UserUPN       = "admin@companies.com"
-
-# -----------------------------
-# Connect to Exchange Online
-# -----------------------------
-Connect-ExchangeOnline -UserPrincipalName $UserUPN
 
 # -----------------------------
 # Update Retention Policies
@@ -36,8 +30,3 @@ Get-Mailbox -ResultSize Unlimited |
         Set-Mailbox -Identity $_.Identity -RetentionPolicy $NewPolicy
         Write-Output "Updated retention policy for: $($_.DisplayName)"
     }
-
-# -----------------------------
-# Disconnect from Exchange Online
-# -----------------------------
-Disconnect-ExchangeOnline -Confirm:$false
