@@ -36,11 +36,13 @@ Az.DesktopVirtualization provides AVD cmdlets such as:
     - Get-AzWvdSessionHost
 These are required for AVD session reporting scripts.
 #>
-Install-Module Az.Accounts -Scope CurrentUser -Force
-Install-Module Az.DesktopVirtualization -Scope CurrentUser -Force
+Install-Module Az.Accounts -Scope CurrentUser -Force -AllowClobber
+Install-Module Az.Resources -Scope CurrentUser -Force -AllowClobber
+Install-Module Az.DesktopVirtualization -Scope CurrentUser -Force -AllowClobber
 
 # Display installed versions for quick verification
 "EXO:   $((Get-Module ExchangeOnlineManagement -ListAvailable).Version)"
 "Graph: $((Get-Module Microsoft.Graph -ListAvailable).Version)"
 "Az.Accounts: $((Get-Module Az.Accounts -ListAvailable).Version)"
 "Az.DesktopVirtualization: $((Get-Module Az.DesktopVirtualization -ListAvailable).Version)"
+
