@@ -11,29 +11,29 @@
     Version: 3.1.2026
 #>
 
-# installs Exchange Online Management 3.3 for stable authentication and predictable automation behavior
+# Installs Exchange Online Management 3.3 for stable authentication and predictable automation behavior
 function Install-ExchangeOnlineManagementModule {
     Install-Module ExchangeOnlineManagement -RequiredVersion 3.3.0 -Force -SkipPublisherCheck
 }
 
-# installs Microsoft Graph meta‑module to ensure all Graph components are available
+# Installs Microsoft Graph meta‑module to ensure all Graph components are available
 function Install-MicrosoftGraphModule {
     Install-Module Microsoft.Graph -Scope AllUsers -AllowClobber
 }
 
-# installs Az modules required for authentication and Azure Virtual Desktop automation
+# Installs Az modules required for authentication and Azure Virtual Desktop automation
 function Install-AzModulesForAutomation {
     Install-Module Az.Accounts -Scope CurrentUser -Force -AllowClobber
     Install-Module Az.Resources -Scope CurrentUser -Force -AllowClobber
     Install-Module Az.DesktopVirtualization -Scope CurrentUser -Force -AllowClobber
 }
 
-# installs Microsoft Teams module for Teams policy, voice, and org-wide administration
+# Installs Microsoft Teams module for Teams policy, voice, and org-wide administration
 function Install-MicrosoftTeamsModule {
     Install-Module MicrosoftTeams -Scope AllUsers -Force -AllowClobber
 }
 
-# displays installed module versions for verification
+# Displays installed module versions for verification
 function Show-InstalledModuleVersions {
     "EXO: $((Get-Module ExchangeOnlineManagement -ListAvailable | Select-Object -First 1).Version)"
     "Graph: $((Get-Module Microsoft.Graph -ListAvailable | Select-Object -First 1).Version)"
@@ -43,7 +43,7 @@ function Show-InstalledModuleVersions {
     "Az.DesktopVirtualization: $((Get-Module Az.DesktopVirtualization -ListAvailable | Select-Object -First 1).Version)"
 }
 
-# orchestrates the full module installation workflow
+# Full module installation workflow
 function Invoke-PrepM365AdminEnvironment {
     Install-ExchangeOnlineManagementModule
     Install-MicrosoftGraphModule
