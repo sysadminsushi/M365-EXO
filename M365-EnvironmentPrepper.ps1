@@ -1,51 +1,56 @@
 <#
 .SYNOPSIS
-    Prepares a clean PowerShell 7 environment for 365/Azure automation.
+    Prepares a clean PowerShell 7 environment for 365, Azure, and Teams automation.
 
 .DESCRIPTION
-    Installs required Microsoft 365 modules in PowerShell 7.
+    Installs Microsoft 365, Graph, Az, and Teams modules in a predictable,
+    automation‑friendly manner suitable for Exchange Online, Graph, AVD, and Teams workflows.
 
 .NOTES
     Author: sysadminsushi
-    Version: 1.19.2026
-    License: MIT License
+    Version: 3.1.2026
 #>
 
-<#
-Installing ExchangeOnlineManagement 3.3 for stability. It provides
-modern EXO V3 cmdlets while avoiding the stricter MSAL dependency
-shifts introduced in v3.4+, ensuring predictable authentication and
-compatibility for legacy automation workflows.
-#>
-Install-Module ExchangeOnlineManagement -RequiredVersion 3.3.0 -Force -SkipPublisherCheck
+# installs Exchange Online Management 3.3 for stable authentication and predictable automation behavior
+function Install-ExchangeOnlineManagementModule {
+    Install-Module ExchangeOnlineManagement -RequiredVersion 3.3.0 -Force -SkipPublisherCheck
+}
 
-<#
-Microsoft.Graph is a meta-module that automatically includes all
-submodules (Users, Groups, Identity, etc.). Installing this single
-package ensures all necessary authentication and functional
-components are available without needing to manage individual
-Graph modules separately.
-#>
-Install-Module Microsoft.Graph -Scope AllUsers -AllowClobber
+# installs Microsoft Graph meta‑module to ensure all Graph components are available
+function Install-MicrosoftGraphModule {
+    Install-Module Microsoft.Graph -Scope AllUsers -AllowClobber
+}
 
-<#
-Az.Accounts provides authentication for all Az modules.
-Az.DesktopVirtualization provides AVD cmdlets such as:
-    - Get-AzWvdUserSession
-    - Get-AzWvdHostPool
-    - Get-AzWvdSessionHost
-These are required for AVD session reporting scripts.
-#>
-Install-Module Az.Accounts -Scope CurrentUser -Force -AllowClobber
-Install-Module Az.Resources -Scope CurrentUser -Force -AllowClobber
-Install-Module Az.DesktopVirtualization -Scope CurrentUser -Force -AllowClobber
+# installs Az modules required for authentication and Azure Virtual Desktop automation
+function Install-AzModulesForAutomation {
+    Install-Module Az.Accounts -Scope CurrentUser -Force -AllowClobber
+    Install-Module Az.Resources -Scope CurrentUser -Force -AllowClobber
+    Install-Module Az.DesktopVirtualization -Scope CurrentUser -Force -AllowClobber
+}
 
-# Display installed versions for quick verification
-"EXO: $((Get-Module ExchangeOnlineManagement -ListAvailable | Select-Object -First 1).Version)"
-"Graph: $((Get-Module Microsoft.Graph -ListAvailable | Select-Object -First 1).Version)"
-"Az.Accounts: $((Get-Module Az.Accounts -ListAvailable | Select-Object -First 1).Version)"
-"Az.Resources: $((Get-Module Az.Resources -ListAvailable | Select-Object -First 1).Version)"
-"Az.DesktopVirtualization: $((Get-Module Az.DesktopVirtualization -ListAvailable | Select-Object -First 1).Version)"
+# installs Microsoft Teams module for Teams policy, voice, and org-wide administration
+function Install-MicrosoftTeamsModule {
+    Install-Module MicrosoftTeams -Scope AllUsers -Force -AllowClobber
+}
 
+# displays installed module versions for verification
+function Show-InstalledModuleVersions {
+    "EXO: $((Get-Module ExchangeOnlineManagement -ListAvailable | Select-Object -First 1).Version)"
+    "Graph: $((Get-Module Microsoft.Graph -ListAvailable | Select-Object -First 1).Version)"
+    "Teams: $((Get-Module MicrosoftTeams -ListAvailable | Select-Object -First 1).Version)"
+    "Az.Accounts: $((Get-Module Az.Accounts -ListAvailable | Select-Object -First 1).Version)"
+    "Az.Resources: $((Get-Module Az.Resources -ListAvailable | Select-Object -First 1).Version)"
+    "Az.DesktopVirtualization: $((Get-Module Az.DesktopVirtualization -ListAvailable | Select-Object -First 1).Version)"
+}
 
+# orchestrates the full module installation workflow
+function Invoke-PrepM365AdminEnvironment {
+    Install-ExchangeOnlineManagementModule
+    Install-MicrosoftGraphModule
+    Install-AzModulesForAutomation
+    Install-MicrosoftTeamsModule
+    Show-InstalledModuleVersions
+}
 
+# Script runner
+Invoke-PrepM365AdminEnvironment
